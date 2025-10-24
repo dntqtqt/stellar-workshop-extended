@@ -34,38 +34,14 @@ if (typeof window !== 'undefined') {
 export const networks = {
   testnet: {
     networkPassphrase: "Test SDF Network ; September 2015",
-    contractId: "CCXCOSRNHGB4AO7RNDZLLMUCYKOQCUVVWF3MSEZWVYBJH3FVJ5SR4WNW",
+    contractId: "CBB5HFLDZUP2SM4JPNVGH5PAOEOZKH64ZI7N2XAL2KMSRVSINPMICOB7",
   }
 } as const
 
 
 export interface Client {
   /**
-   * Construct and simulate a initialize transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-   * Initialize campaign baru dengan goal, deadline, dan XLM token address
-   * Frontend perlu pass: owner address, goal (in stroops), deadline (unix timestamp), xlm_token (address)
-   */
-  initialize: ({owner, goal, deadline, xlm_token}: {owner: string, goal: i128, deadline: u64, xlm_token: string}, options?: {
-    /**
-     * The fee to pay for the transaction. Default: BASE_FEE
-     */
-    fee?: number;
-
-    /**
-     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-     */
-    timeoutInSeconds?: number;
-
-    /**
-     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-     */
-    simulate?: boolean;
-  }) => Promise<AssembledTransaction<null>>
-
-  /**
    * Construct and simulate a donate transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-   * Donate ke campaign menggunakan XLM token transfer
-   * Frontend perlu pass: donor address, amount (stroops)
    */
   donate: ({donor, amount}: {donor: string, amount: i128}, options?: {
     /**
@@ -85,9 +61,127 @@ export interface Client {
   }) => Promise<AssembledTransaction<null>>
 
   /**
+   * Construct and simulate a refund transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  refund: ({donor}: {donor: string}, options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<null>>
+
+  /**
+   * Construct and simulate a withdraw transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  withdraw: ({owner}: {owner: string}, options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<null>>
+
+  /**
+   * Construct and simulate a initialize transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  initialize: ({owner, goal, deadline, xlm_token, title, description, image_url, min_donation}: {owner: string, goal: i128, deadline: u64, xlm_token: string, title: string, description: string, image_url: string, min_donation: i128}, options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<null>>
+
+  /**
+   * Construct and simulate a get_donation transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  get_donation: ({donor}: {donor: string}, options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<i128>>
+
+  /**
+   * Construct and simulate a get_all_donors transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  get_all_donors: (options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<Array<readonly [string, i128]>>>
+
+  /**
+   * Construct and simulate a get_min_donation transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  get_min_donation: (options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<i128>>
+
+  /**
    * Construct and simulate a get_total_raised transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-   * Get total amount yang sudah terkumpul
-   * Frontend bisa call tanpa parameter
    */
   get_total_raised: (options?: {
     /**
@@ -107,11 +201,9 @@ export interface Client {
   }) => Promise<AssembledTransaction<i128>>
 
   /**
-   * Construct and simulate a get_donation transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-   * Get berapa banyak specific donor sudah donate
-   * Frontend perlu pass: donor address
+   * Construct and simulate a get_campaign_info transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
    */
-  get_donation: ({donor}: {donor: string}, options?: {
+  get_campaign_info: (options?: {
     /**
      * The fee to pay for the transaction. Default: BASE_FEE
      */
@@ -126,7 +218,47 @@ export interface Client {
      * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
      */
     simulate?: boolean;
-  }) => Promise<AssembledTransaction<i128>>
+  }) => Promise<AssembledTransaction<readonly [string, i128, u64, string, string, string, i128, u32]>>
+
+  /**
+   * Construct and simulate a is_deadline_passed transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  is_deadline_passed: (options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<boolean>>
+
+  /**
+   * Construct and simulate a get_campaign_status transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  get_campaign_status: (options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<u32>>
 
   /**
    * Construct and simulate a get_is_already_init transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
@@ -148,6 +280,26 @@ export interface Client {
     simulate?: boolean;
   }) => Promise<AssembledTransaction<boolean>>
 
+  /**
+   * Construct and simulate a get_progress_percentage transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   */
+  get_progress_percentage: (options?: {
+    /**
+     * The fee to pay for the transaction. Default: BASE_FEE
+     */
+    fee?: number;
+
+    /**
+     * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+     */
+    timeoutInSeconds?: number;
+
+    /**
+     * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+     */
+    simulate?: boolean;
+  }) => Promise<AssembledTransaction<u32>>
+
 }
 export class Client extends ContractClient {
   static async deploy<T = Client>(
@@ -166,19 +318,35 @@ export class Client extends ContractClient {
   }
   constructor(public readonly options: ContractClientOptions) {
     super(
-      new ContractSpec([ "AAAAAAAAAKtJbml0aWFsaXplIGNhbXBhaWduIGJhcnUgZGVuZ2FuIGdvYWwsIGRlYWRsaW5lLCBkYW4gWExNIHRva2VuIGFkZHJlc3MKRnJvbnRlbmQgcGVybHUgcGFzczogb3duZXIgYWRkcmVzcywgZ29hbCAoaW4gc3Ryb29wcyksIGRlYWRsaW5lICh1bml4IHRpbWVzdGFtcCksIHhsbV90b2tlbiAoYWRkcmVzcykAAAAACmluaXRpYWxpemUAAAAAAAQAAAAAAAAABW93bmVyAAAAAAAAEwAAAAAAAAAEZ29hbAAAAAsAAAAAAAAACGRlYWRsaW5lAAAABgAAAAAAAAAJeGxtX3Rva2VuAAAAAAAAEwAAAAA=",
-        "AAAAAAAAAGZEb25hdGUga2UgY2FtcGFpZ24gbWVuZ2d1bmFrYW4gWExNIHRva2VuIHRyYW5zZmVyCkZyb250ZW5kIHBlcmx1IHBhc3M6IGRvbm9yIGFkZHJlc3MsIGFtb3VudCAoc3Ryb29wcykAAAAAAAZkb25hdGUAAAAAAAIAAAAAAAAABWRvbm9yAAAAAAAAEwAAAAAAAAAGYW1vdW50AAAAAAALAAAAAA==",
-        "AAAAAAAAAEhHZXQgdG90YWwgYW1vdW50IHlhbmcgc3VkYWggdGVya3VtcHVsCkZyb250ZW5kIGJpc2EgY2FsbCB0YW5wYSBwYXJhbWV0ZXIAAAAQZ2V0X3RvdGFsX3JhaXNlZAAAAAAAAAABAAAACw==",
-        "AAAAAAAAAFBHZXQgYmVyYXBhIGJhbnlhayBzcGVjaWZpYyBkb25vciBzdWRhaCBkb25hdGUKRnJvbnRlbmQgcGVybHUgcGFzczogZG9ub3IgYWRkcmVzcwAAAAxnZXRfZG9uYXRpb24AAAABAAAAAAAAAAVkb25vcgAAAAAAABMAAAABAAAACw==",
-        "AAAAAAAAAAAAAAATZ2V0X2lzX2FscmVhZHlfaW5pdAAAAAAAAAAAAQAAAAE=" ]),
+      new ContractSpec([ "AAAAAAAAAAAAAAAGZG9uYXRlAAAAAAACAAAAAAAAAAVkb25vcgAAAAAAABMAAAAAAAAABmFtb3VudAAAAAAACwAAAAA=",
+        "AAAAAAAAAAAAAAAGcmVmdW5kAAAAAAABAAAAAAAAAAVkb25vcgAAAAAAABMAAAAA",
+        "AAAAAAAAAAAAAAAId2l0aGRyYXcAAAABAAAAAAAAAAVvd25lcgAAAAAAABMAAAAA",
+        "AAAAAAAAAAAAAAAKaW5pdGlhbGl6ZQAAAAAACAAAAAAAAAAFb3duZXIAAAAAAAATAAAAAAAAAARnb2FsAAAACwAAAAAAAAAIZGVhZGxpbmUAAAAGAAAAAAAAAAl4bG1fdG9rZW4AAAAAAAATAAAAAAAAAAV0aXRsZQAAAAAAABAAAAAAAAAAC2Rlc2NyaXB0aW9uAAAAABAAAAAAAAAACWltYWdlX3VybAAAAAAAABAAAAAAAAAADG1pbl9kb25hdGlvbgAAAAsAAAAA",
+        "AAAAAAAAAAAAAAAMZ2V0X2RvbmF0aW9uAAAAAQAAAAAAAAAFZG9ub3IAAAAAAAATAAAAAQAAAAs=",
+        "AAAAAAAAAAAAAAAOZ2V0X2FsbF9kb25vcnMAAAAAAAAAAAABAAAD6gAAA+0AAAACAAAAEwAAAAs=",
+        "AAAAAAAAAAAAAAAQZ2V0X21pbl9kb25hdGlvbgAAAAAAAAABAAAACw==",
+        "AAAAAAAAAAAAAAAQZ2V0X3RvdGFsX3JhaXNlZAAAAAAAAAABAAAACw==",
+        "AAAAAAAAAAAAAAARZ2V0X2NhbXBhaWduX2luZm8AAAAAAAAAAAAAAQAAA+0AAAAIAAAAEwAAAAsAAAAGAAAAEAAAABAAAAAQAAAACwAAAAQ=",
+        "AAAAAAAAAAAAAAASaXNfZGVhZGxpbmVfcGFzc2VkAAAAAAAAAAAAAQAAAAE=",
+        "AAAAAAAAAAAAAAATZ2V0X2NhbXBhaWduX3N0YXR1cwAAAAAAAAAAAQAAAAQ=",
+        "AAAAAAAAAAAAAAATZ2V0X2lzX2FscmVhZHlfaW5pdAAAAAAAAAAAAQAAAAE=",
+        "AAAAAAAAAAAAAAAXZ2V0X3Byb2dyZXNzX3BlcmNlbnRhZ2UAAAAAAAAAAAEAAAAE" ]),
       options
     )
   }
   public readonly fromJSON = {
-    initialize: this.txFromJSON<null>,
-        donate: this.txFromJSON<null>,
-        get_total_raised: this.txFromJSON<i128>,
+    donate: this.txFromJSON<null>,
+        refund: this.txFromJSON<null>,
+        withdraw: this.txFromJSON<null>,
+        initialize: this.txFromJSON<null>,
         get_donation: this.txFromJSON<i128>,
-        get_is_already_init: this.txFromJSON<boolean>
+        get_all_donors: this.txFromJSON<Array<readonly [string, i128]>>,
+        get_min_donation: this.txFromJSON<i128>,
+        get_total_raised: this.txFromJSON<i128>,
+        get_campaign_info: this.txFromJSON<readonly [string, i128, u64, string, string, string, i128, u32]>,
+        is_deadline_passed: this.txFromJSON<boolean>,
+        get_campaign_status: this.txFromJSON<u32>,
+        get_is_already_init: this.txFromJSON<boolean>,
+        get_progress_percentage: this.txFromJSON<u32>
   }
 }
